@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "immer": "^9.0.21",
-    "lodash": "^4.17.21"
-  }
-}
