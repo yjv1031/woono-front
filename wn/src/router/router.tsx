@@ -9,7 +9,7 @@ import PhotoRegist from '../pages/photo/PhotoRegist';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/woono-front/",
     element: <App />,
   },
   {
