@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/woono-front/static/css/main.e6c13ad2.css",
-    "main.js": "/woono-front/static/js/main.b7a6ea72.js",
+    "main.js": "/woono-front/static/js/main.1fe53d65.js",
     "index.html": "/woono-front/index.html",
     "main.e6c13ad2.css.map": "/woono-front/static/css/main.e6c13ad2.css.map",
-    "main.b7a6ea72.js.map": "/woono-front/static/js/main.b7a6ea72.js.map"
+    "main.1fe53d65.js.map": "/woono-front/static/js/main.1fe53d65.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.b7a6ea72.js"
+    "static/js/main.1fe53d65.js"
   ]
 }
