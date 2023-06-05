@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.search_box button {
+  margin-left: 5px;
+  width: 20%;
+}
+.search_box {
+  display: flex;
+}
+@media (min-width: 1200px) {
+}
+.upload_file_list .upload_btn {
+  float: right;
+}
