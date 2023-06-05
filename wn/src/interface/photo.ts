@@ -1,6 +1,8 @@
 export interface photo {
   name: string;
   seq: number;
+  fileName: string;
+  userNo: number;
 };
 
 export interface photoListState {

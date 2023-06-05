@@ -1,37 +1,34 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { searchPhotoListAction } from '../../store/photo/photoList';
-import { RootState } from '../../store';
+import { useEffect, useState } from 'react';
+import { useObserver } from "mobx-react";
+import useStores from '../../store';
+import constant from '../../constant/constant';
 
-export default function PhotoList() {
+const PhotoList = () => {
+  const { photoList } = useStores();
   const [searchKeyword, setSearchKeyword] = useState('');
-  const photoList = useSelector((state: RootState) => state.photoList.list);
-  const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
-
   const onSearchPhotoList = (param: string) => {
-    dispatch(searchPhotoListAction(param));
+    photoList.searchPhotoList(param);
   }
 
-  return (    
-      <>
-        <div className="search_box">
-          <input className='' type="text" placeholder="검색하기" value={searchKeyword} onChange={(event) => {setSearchKeyword(event.target.value);}}/>
-          <button onClick={() => {onSearchPhotoList(searchKeyword); setSearchKeyword('');}}>asdasdas</button>
-        </div>
-        {photoList.map(item => {
-          return <article>
-                    <header>{item.name} Header</header>
-                    {item.name} Body
-                    <footer>{item.name} Footer</footer>
-                  </article>;
-        })}
-        <div className="grid">
-            <article>
-                <header>Header</header>
-                Body: I'm a card-2!
-                <footer>Footer</footer>
-            </article>
-        </div>
-      </>
-  );
+  useEffect(() => {
+    photoList.searchPhotoList('');
+  }, []);
+
+  return useObserver(() => (
+    <>
+      <div className="search_box">
+        <input className='' type="text" placeholder="검색하기" value={searchKeyword} onChange={(event) => {setSearchKeyword(event.target.value);}}/>
+        <button onClick={() => {onSearchPhotoList(searchKeyword); setSearchKeyword('');}}>search</button>
+      </div>
+      {photoList.list.map(item => {
+        return <article key={item.seq}>
+                  <header>{item.name} Header</header>
+                  <img src={`${constant.BACK_END_URL}/woono/photo/view/${item.seq}/${item.fileName}`} />
+                  <footer>{item.name} Footer</footer>
+                </article>;
+      })}
+    </>
+  ));
 }
+  
+export default PhotoList;

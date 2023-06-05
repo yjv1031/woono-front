@@ -1,44 +1,29 @@
-import produce from 'immer';
-import { photo, photoListState } from '../../interface/photo';
+import { observable } from "mobx";
+import { photoFileUploadObject } from "../../interface/photo";
+import { callPhotoRegistApi } from "../../repository/photo/photoRepository";
 
-// 액션 타입
-const SEARCH_PHOTO_LIST = 'SEARCH_PHOTO_LIST' as const;
-
-// 액션 생성함수
-export const searchPhotoListAction = (param: string) => {
-  return {
-    type: SEARCH_PHOTO_LIST,
-    payload: param
-  };
-};
-
-function searchPhotoList(searchKeyword: string) {
-  let result: photo[] = [];
-  if(1) {
-
-  }
-  return result;
+interface photoRegistStore {
+  savePhotoList: Function
 }
 
-// 리듀서
-function photoList(
-  state: photoListState = {
-    list: []
-  },
-  action: {
-    type: string,
-    payload?: any
-  }
-): photoListState {
-  switch (action.type) {
-    case SEARCH_PHOTO_LIST: // case 라고 입력하고 Ctrl + Space 를 누르면 어떤 종류의 action.type들이 있는지 확인 할 수 있습니다.
-      const result = searchPhotoList(action.payload);
-      return produce(state, item => {
-        item.list = result;
+export const photoRegist = observable({
+  async savePhotoList(fileList: photoFileUploadObject[]) {
+    if(fileList.length > 0) {
+      const formData = new FormData();
+      fileList.forEach((item) => {
+        formData.append('files', item.file);
       });
-    default:
-      return state;
-  }
-}
-
-export default photoList;
+      const data = {"userNo": 2};
+      formData.append('requestDTO', new Blob([JSON.stringify(data)] , {type: "application/json"}));
+      const result = await callPhotoRegistApi(formData);
+      if(result) {
+        alert('파일이 업로드 되었습니다');
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      alert('파일을 선택 후 업로드 하십시오');
+    }
+  },
+});

@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../../store';
+import { useObserver } from "mobx-react";
 import { photoFileUploadObject } from '../../interface/photo';
+import useStores from '../../store';
 
-export default function PhotoRegist() {
+const PhotoRegist = () => {
+  const { photoRegist } = useStores();
+
+  const { savePhotoList } = photoRegist;
   const [files, setFiles] = useState<photoFileUploadObject[]>([]);
-  const photoList = useSelector((state: RootState) => state.photoList.list);
-  const dispatch = useDispatch(); // 디스패치 함수를 가져옵니다
 
   const onFileChange = (event: any) => {
     const uploadFile = event.target.files[0];
@@ -30,7 +31,9 @@ export default function PhotoRegist() {
         ...files,
         obj
       ]);
-   	};
+    };
+
+    event.target.value = ''; 
   }
 
   const deleteUploadFile = (e: any, idx: number) => {
@@ -38,22 +41,31 @@ export default function PhotoRegist() {
     setFiles(files.filter((item, index) => {return idx != index}).map(item => item));
   }
 
-  return (    
-      <>
-        <a href="#" role="button" onClick={() => {}}>사진 업로드</a>
-        <input type="file" onChange={onFileChange}/>
-        {files.map((item, idx) => {
-          return (
-            <article key={`upload_file_idx_${idx}`} className='upload_file_list'>
-              <header>{item.file.name}</header>
-              <img src={item.preview}/>
-              <footer>
-                <a href="#" role="button" className='upload_btn' onClick={(e) => deleteUploadFile(e, idx)}>삭제</a>
-              </footer>
-              
-            </article>
-          );
-        })}
-      </>
-  );
+  const callSavePhotoList = async(e : any) => {
+    e.preventDefault();
+    const result = await savePhotoList(files);
+    if(result) {
+      setFiles([]);
+    }
+  }
+
+  return useObserver(() => (
+    <>
+      <a href="#" role="button" onClick={(e) => {callSavePhotoList(e);}}>사진 업로드</a>
+      <input type="file" onChange={onFileChange}/>
+      {files.map((item, idx) => {
+        return (
+          <article key={`upload_file_idx_${idx}`} className='upload_file_list'>
+            <header>{item.file.name}</header>
+            <img src={item.preview}/>
+            <footer>
+              <a href="#" role="button" className='upload_btn' onClick={(e) => deleteUploadFile(e, idx)}>삭제</a>
+            </footer>
+          </article>
+        );
+      })}
+    </>
+  ));
 }
+
+export default PhotoRegist;
