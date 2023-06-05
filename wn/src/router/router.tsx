@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/photo/list",
+    path: "/woono-front/photo/list",
     element: 
     <CommonLayout>
       <PhotoList />
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
 ,
   },
   {
-    path: "/photo/regist",
+    path: "/woono-front/photo/regist",
     element: 
     <CommonLayout>
       <PhotoRegist />
